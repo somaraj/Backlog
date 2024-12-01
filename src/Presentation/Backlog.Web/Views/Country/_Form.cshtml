@@ -1,0 +1,147 @@
+﻿@model CountryModel
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a href="#tabCountry" class="nav-link active" data-bs-toggle="tab" aria-selected="false" role="tab">
+                    <i class="fas fa-sticky-note me-2"></i>@Localize("CountryPage.CountryTabTitle").Text
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="#tabStates" class="nav-link" data-bs-toggle="tab" aria-selected="true" role="tab">
+                    <i class="fas fa-list-ul me-2"></i>@Localize("CountryPage.StateTabTitle").Text
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body p-2">
+        <div class="tab-content">
+            <div class="tab-pane active show" id="tabCountry" role="tabpanel">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="message-error"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <wc-label asp-for="Name" />
+                            <input asp-for="Name" class="form-control form-control-maxlength" autocomplete="off" maxlength="100" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <wc-label asp-for="TwoLetterIsoCode" />
+                            <input asp-for="TwoLetterIsoCode" class="form-control form-control-maxlength" autocomplete="off" maxlength="2" />
+                            <span asp-validation-for="TwoLetterIsoCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <wc-label asp-for="ThreeLetterIsoCode" />
+                            <input asp-for="ThreeLetterIsoCode" class="form-control form-control-maxlength" autocomplete="off" maxlength="3" />
+                            <span asp-validation-for="ThreeLetterIsoCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-3">
+                            <wc-label asp-for="DisplayOrder" />
+                            <input asp-for="DisplayOrder" class="form-control form-control-maxlength" autocomplete="off" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" asp-for="Active">
+                                <wc-label asp-for="Active" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end pt-3 pb-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>@Localize("Button.Save")
+                    </button>
+                    @if (Model.Id <= 0)
+                    {
+                        <button type="submit" name="save-continue" class="btn btn-success">
+                            <i class="fas fa-save me-1"></i>@Localize("Button.SaveAndContinue")
+                        </button>
+                    }
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-ban me-1"></i>@Localize("Button.Back")
+                    </a>
+                </div>
+            </div>
+            <div class="tab-pane" id="tabStates" role="tabpanel">
+                @if (Model.Id > 0)
+                {
+                    @await Html.PartialAsync("DataTable", new DataTableModel
+                    {
+                        Name = "StateGrid",
+                        Title = $"{Localize("StatePage.Title").Text} in {Model.Name}",
+                        SubTitle = Localize("StatePage.SubTitle").Text,
+                        LengthChangeLabel = Localize("Grid.LengthChangeLabel").Text,
+                        SearchLabel = Localize("Grid.SearchLabel").Text,
+                        SearchPlaceholder = Localize("Grid.SearchPlaceholder").Text,
+                        ZeroRecordsLabel = Localize("Grid.ZeroRecords").Text,
+                        FooterInfoLabel = Localize("Grid.FooterInfo").Text,
+                        FooterInfoWhenEmptyLabel = Localize("Grid.FooterInfoWhenEmpty").Text,
+                        UrlRead = Url.Action("DataRead", "StateProvince", new { countryId = Model.Id }),
+                        HeaderActions = new List<ActionModel>
+                        {
+                            new ActionModel {
+                                Title = Localize("Button.AddNew").Text,
+                                Url = Url.Action("Create", "StateProvince", new { countryId = Model.Id }),
+                                Text = Localize("Button.AddNew").Text,
+                                Icon = "fas fa-plus",
+                                HyperLinkType = HyperLinkTypeEnum.BUTTON_TEXT_ICON,
+                                NavigationType = NavigationTypeEnum.MODAL,
+                                ButtonColor = ButtonColorEnum.PRIMARY
+                            }
+                        },
+                        ColumnActions = new List<ActionModel>
+                        {
+                            new ActionModel {
+                                Title = Localize("Button.Edit").Text,
+                                Url = Url.Action("Edit", "StateProvince"),
+                                Text = Localize("Button.Edit").Text,
+                                Icon = "far fa-edit",
+                                ReferenceParameter = "Id",
+                                HyperLinkType = HyperLinkTypeEnum.HYPERLINK_TEXT_ICON,
+                                NavigationType = NavigationTypeEnum.MODAL,
+                                ButtonColor = ButtonColorEnum.PRIMARY
+                            },
+                            new ActionModel {
+                                Title = Localize("Button.Delete").Text,
+                                Url = Url.Action("Delete", "StateProvince"),
+                                Text =  Localize("Button.Delete").Text,
+                                AuxText =  Localize("Button.Cancel").Text,
+                                Icon = "fas fa-trash",
+                                ReferenceParameter = "Id",
+                                DeleteConfirmBox = true,
+                                DeleteConfirmBoxMsg = Localize("Confirmation.Delete").Text,
+                                HyperLinkType = HyperLinkTypeEnum.HYPERLINK_TEXT_ICON,
+                                ButtonColor = ButtonColorEnum.PRIMARY
+                            }
+                    },
+                    Columns = new List<ColumnModel>
+                    {
+                        new ColumnModel { Title = Localize("StateGrid.Name").Text, DataColumn = "Name" },
+                        new ColumnModel { Title = Localize("StateGrid.DisplayOrder").Text, DataColumn = "DisplayOrder" },
+                        new ColumnModel { Title = Localize("StateGrid.Active").Text, DataColumn = "Active",
+                        Conditions = new List<ColumnConditionModel>{
+                            new ColumnConditionModel { Value = "true", Operator = OperatorEnum.EQUAL, Icon = "fa fa-check", TextColor = "#2eb85c" },
+                            new ColumnConditionModel { Value = "false", Operator = OperatorEnum.EQUAL, Icon = "fa fa-times", TextColor = "#e55353" }
+                        }}}
+                    })
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        @Localize("CountryPage.SaveToAddStateMsg").Text
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

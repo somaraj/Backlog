@@ -1,0 +1,91 @@
+﻿@model BacklogItemModel
+<input type="hidden" asp-for="Id" />
+<div class="row">
+    <div class="col-md-12">
+        <div class="mb-3">
+            <wc-label asp-for="Title" class="form-wc-label"></wc-label>
+            <input asp-for="Title" class="form-control form-control-maxlength" autocomplete="off" maxlength="500" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="mb-3">
+            <wc-label asp-for="Description" />
+            <textarea asp-for="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="dropzone-container" class="dropzone">
+            <div class="dz-message">
+                Drag and drop files here or click to upload
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function () {
+    Dropzone.autoDiscover = false;
+    let docs = [];
+
+    const myDropzone = $("div#dropzone-container").dropzone({
+            url: "@Url.Action("Upload", "Document")",
+            autoProcessQueue: true,
+            maxFilesize: 2,
+            maxFiles: 5,
+            addRemoveLinks: true,
+            acceptedFiles: ".jpg,.png,.gif,.pdf,.docx,.txt",
+            init: function () {
+                this.on("addedfile", function (file) {
+                    const progressElement = file.previewElement.querySelector(".dz-progress");
+                    if (progressElement) {
+                        progressElement.remove();
+                    }
+                });
+
+                this.on("success", function (file, response) {
+                    file.serverFilePath = response.token;
+                    docs.push(response.token);
+                    $('#Token').val(JSON.stringify(docs));
+                });
+
+                this.on("maxfilesexceeded", function (file) {
+                    this.removeFile(file);
+                    alert("You can only upload up to 5 files.");
+                });
+
+                this.on("removedfile", function (file) {
+                    if (file.serverFilePath) {
+                        fetch('@Url.Action("Delete", "Document")', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ token: file.serverFilePath })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('File deletion failed');
+                            }
+                            console.log('File deleted successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error deleting file:', error);
+                        });
+                    }
+                });
+            }
+        });
+
+        tinymce.init({
+            selector: '#Description',
+            plugins: 'lists link image table code',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+            height: 250,
+            menubar: false
+        });
+    });
+</script>

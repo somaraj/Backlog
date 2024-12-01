@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Copyright>Copyright © Wise Coder</Copyright>
+		<Authors>Somaraj N</Authors>
+		<Version>1.0</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Logs\**" />
+		<Compile Remove="wwwroot\lib\bootstrap-icons\**" />
+		<Compile Remove="wwwroot\lib\daterangepicker\**" />
+		<Compile Remove="wwwroot\lib\fontawesome-free\**" />
+		<Compile Remove="wwwroot\lib\jquery-ajax-unobtrusive\**" />
+		<Compile Remove="wwwroot\lib\jquery-blockUI\**" />
+		<Compile Remove="wwwroot\lib\jquery-confirm\**" />
+		<Compile Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
+		<Compile Remove="wwwroot\lib\toastr\**" />
+		<Content Remove="Logs\**" />
+		<Content Remove="wwwroot\lib\bootstrap-icons\**" />
+		<Content Remove="wwwroot\lib\daterangepicker\**" />
+		<Content Remove="wwwroot\lib\fontawesome-free\**" />
+		<Content Remove="wwwroot\lib\jquery-ajax-unobtrusive\**" />
+		<Content Remove="wwwroot\lib\jquery-blockUI\**" />
+		<Content Remove="wwwroot\lib\jquery-confirm\**" />
+		<Content Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
+		<Content Remove="wwwroot\lib\toastr\**" />
+		<EmbeddedResource Remove="Logs\**" />
+		<EmbeddedResource Remove="wwwroot\lib\bootstrap-icons\**" />
+		<EmbeddedResource Remove="wwwroot\lib\daterangepicker\**" />
+		<EmbeddedResource Remove="wwwroot\lib\fontawesome-free\**" />
+		<EmbeddedResource Remove="wwwroot\lib\jquery-ajax-unobtrusive\**" />
+		<EmbeddedResource Remove="wwwroot\lib\jquery-blockUI\**" />
+		<EmbeddedResource Remove="wwwroot\lib\jquery-confirm\**" />
+		<EmbeddedResource Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
+		<EmbeddedResource Remove="wwwroot\lib\toastr\**" />
+		<None Remove="Logs\**" />
+		<None Remove="wwwroot\lib\bootstrap-icons\**" />
+		<None Remove="wwwroot\lib\daterangepicker\**" />
+		<None Remove="wwwroot\lib\fontawesome-free\**" />
+		<None Remove="wwwroot\lib\jquery-ajax-unobtrusive\**" />
+		<None Remove="wwwroot\lib\jquery-blockUI\**" />
+		<None Remove="wwwroot\lib\jquery-confirm\**" />
+		<None Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
+		<None Remove="wwwroot\lib\toastr\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Libraries\Backlog.Core\Backlog.Core.csproj" />
+		<ProjectReference Include="..\..\Libraries\Backlog.Service\Backlog.Service.csproj" />
+	</ItemGroup>
+</Project>

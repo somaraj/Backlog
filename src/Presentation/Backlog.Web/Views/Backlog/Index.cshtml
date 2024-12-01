@@ -1,0 +1,133 @@
+﻿@model BacklogModel
+@{
+    ViewData["Title"] = Localize("BacklogPage.Title");
+    var editButton = string.Empty;
+    if (Model.CanReport)
+    {
+        editButton = $"<a title = 'button.edit' href = '{Url.Action("Edit")}' class='me-1'><i class='far fa-edit'></i>{Localize("Button.Edit")}</a>";
+    }
+}
+
+<div class="card">
+    <div class="card-body p-3">
+        <table class="table table-bordered table-condensed table-striped nowrap" id="BacklogGrid"></table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        JSManager.setPageTitle('@Localize("BacklogPage.Title").Text');
+        let canReport = JSON.parse('@Model.CanReport.ToString().ToLower()');
+        let canClose = JSON.parse('@Model.CanClose.ToString().ToLower()');
+
+        if (canReport) {
+            $('#pageButtons').append(`<a href="@Url.Action("Create")" class="btn btn-sm btn-primary me-2"><i class="fas fa-plus me-1"></i>Add New</a>`);
+        }
+
+        let table = $("#BacklogGrid").DataTable({
+            processing: true,
+            serverSide: true,
+            stateSave: false,
+            info: true,
+            autoWidth: false,
+            filter: false,
+            lengthChange: true,
+            pageLength: 10,
+            searching: true,
+            ordering: true,
+            initComplete: function (settings, json) {
+            },
+            language: {
+                search: '<span>@Localize("Grid.SearchLabel").Text</span> _INPUT_',
+                searchPlaceholder: '@Localize("Grid.SearchPlaceholder").Text',
+                lengthMenu: '_MENU_ @Localize("Grid.LengthChangeLabel").Text',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' },
+                zeroRecords: '@Localize("Grid.ZeroRecords").Text',
+                info: '@Localize("Grid.FooterInfo").Text',
+                infoEmpty: '@Localize("Grid.FooterInfoWhenEmpty").Text'
+            },
+            ajax: {
+                url: "@Url.Action("DataRead", new { projectId = 0 })",
+                type: "POST",
+                datatype: "json",
+                data: function (dto) {
+                    JSManager.addAntiForgeryToken(dto);
+                }
+            },
+            columns: [{
+                title: 'Title',
+                data: 'Title',
+                sortable: true,
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                title: 'TaskType',
+                sortable: true,
+                render: function (data, type, row) {
+                    return `<span class="badge" style="color:${row.TaskType.TextColor};background-color:${row.TaskType.BackgroundColor};"><i class="${row.TaskType.IconClass} me-1"></i>${row.TaskType.Name}</span>`;
+                }
+            },
+            {
+                title: 'Severity',
+                sortable: true,
+                render: function (data, type, row) {
+                    return `<span class="badge" style="color:${row.Severity.TextColor};background-color:${row.Severity.BackgroundColor};"><i class="${row.Severity.IconClass} me-1"></i>${row.Severity.Name}</span>`;
+                }
+            },
+            {
+                title: 'Project',
+                data: 'Project',
+                sortable: true,
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                title: 'Module',
+                data: 'Module',
+                sortable: true,
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                title: 'SubModule',
+                data: 'SubModule',
+                sortable: true,
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                title: 'Assignee',
+                data: 'Assignee',
+                sortable: true,
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                title: 'Status',
+                sortable: true,
+                render: function (data, type, row) {
+                    return `<span class="badge" style="color:${row.Status.TextColor};background-color:${row.Status.BackgroundColor};"><i class="${row.Status.IconClass} me-1"></i>${row.Status.Name}</span>`;
+                }
+            },
+            {
+                title: 'Actions',
+                sortable: true,
+                render: function (data, type, row) {
+                    let html = '';
+                    if(JSON.parse(@Model.CanReport.ToString().ToLower())){
+                        html += `<a title = "@Localize("Button.Edit")" href="@Url.Action("Edit")/${row.Id}" class="me-1"><i class="far fa-edit"></i>@Localize("Button.Edit")</a>`;
+                    }
+                    return html;
+                }
+            }]
+        });
+
+        $("#BacklogGrid").closest('div').addClass("table-responsive");
+    });
+</script>

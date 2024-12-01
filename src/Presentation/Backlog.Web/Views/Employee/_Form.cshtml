@@ -1,0 +1,148 @@
+﻿@model EmployeeRegistrationModel
+<input type="hidden" asp-for="Employee.Id" />
+<input type="hidden" asp-for="Address.Id" />
+<div class="row">
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.FirstName" class="form-wc-label"></wc-label>
+			<input asp-for="Employee.FirstName" class="form-control form-control-maxlength" autocomplete="off" maxlength="50" />
+			<span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.LastName" />
+			<input asp-for="Employee.LastName" class="form-control form-control-maxlength" autocomplete="off" maxlength="50" />
+			<span asp-validation-for="Employee.LastName" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.Email" />
+			<input asp-for="Employee.Email" class="form-control form-control-maxlength" autocomplete="off" maxlength="150" />
+			<span asp-validation-for="Employee.Email" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.MobileNumber" />
+			<input asp-for="Employee.MobileNumber" class="form-control form-control-maxlength" autocomplete="off" maxlength="10" />
+			<span asp-validation-for="Employee.MobileNumber" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.GenderId" />
+			<select class="form-control select2" data-style="btn-default" asp-for="Employee.GenderId" asp-items="Html.GetEnumSelectList<GenderEnum>()"></select>
+			<span asp-validation-for="Employee.GenderId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.DateOfBirth" />
+			<input asp-for="Employee.DateOfBirth" class="form-control datepicker-dob" autocomplete="off" type="text" maxlength="15" />
+			<span asp-validation-for="Employee.DateOfBirth" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.DateOfJoin" />
+			<input asp-for="Employee.DateOfJoin" class="form-control datepicker" autocomplete="off" type="text" maxlength="15" />
+			<span asp-validation-for="Employee.DateOfJoin" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.DepartmentId" />
+			<select class="form-control select2" data-style="btn-default" asp-for="Employee.DepartmentId" asp-items="Model.AvailableDepartments"></select>
+			<span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.DesignationId" />
+			<select class="form-control select2" data-style="btn-default" asp-for="Employee.DesignationId" asp-items="Model.AvailableDesignations"></select>
+			<span asp-validation-for="Employee.DesignationId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.LanguageId" />
+			<select class="form-control select2" data-style="btn-default" asp-for="Employee.LanguageId" asp-items="Model.AvailableLanguages"></select>
+			<span asp-validation-for="Employee.LanguageId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="mb-3">
+			<wc-label asp-for="Employee.Status" />
+			<select asp-for="Employee.Status" asp-items="Html.GetEnumSelectList<EmployeeStatusEnum>()" class="form-control select2"></select>
+			<span asp-validation-for="Employee.Status" class="text-danger"></span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="mb-3">
+			<wc-label asp-for="Address.Address1" class="form-wc-label"></wc-label>
+			<input asp-for="Address.Address1" class="form-control form-control-maxlength" autocomplete="off" />
+			<span asp-validation-for="Address.Address1" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="mb-3">
+			<wc-label asp-for="Address.Address2" class="form-wc-label"></wc-label>
+			<input asp-for="Address.Address2" class="form-control form-control-maxlength" autocomplete="off" />
+			<span asp-validation-for="Address.Address2" class="text-danger"></span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="mb-3">
+			<iqm-label asp-for="Employee.SelectedRoleIds" />
+			<select asp-for="Employee.SelectedRoleIds" asp-items="Model.AvailableRoles" class="form-control select2" multiple></select>
+			<span asp-validation-for="Employee.SelectedRoleIds" class="text-danger"></span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Address.CountryId" class="form-wc-label"></wc-label>
+			<select asp-for="Address.CountryId" asp-items="Model.AvailableCountries" class="form-control select2"></select>
+			<span asp-validation-for="Address.CountryId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Address.StateProvinceId" class="form-wc-label"></wc-label>
+			<select asp-for="Address.StateProvinceId" asp-items="Model.AvailableStates" class="form-control select2"></select>
+			<span asp-validation-for="Address.StateProvinceId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Address.City" class="form-wc-label"></wc-label>
+			<input asp-for="Address.City" class="form-control form-control-maxlength" autocomplete="off" maxlength="50" />
+			<span asp-validation-for="Address.City" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="mb-3">
+			<wc-label asp-for="Address.ZipPostalCode" class="form-wc-label"></wc-label>
+			<input asp-for="Address.ZipPostalCode" class="form-control numeric-tb form-control-maxlength" autocomplete="off" maxlength="10" />
+			<span asp-validation-for="Address.ZipPostalCode" class="text-danger"></span>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function () {
+		$("#Address_CountryId").change(function () {
+			var dto = {
+				country: $(this).val(),
+			};
+			JSManager.bindSelect("Address_StateProvinceId", "@Url.Action("GetStates", "StateProvince")", dto);
+		});
+	});
+</script>

@@ -1,0 +1,19 @@
+﻿@model EmployeeRoleModel
+@{
+	Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+
+@if (Model.SystemRole)
+{
+	<div class="alert alert-warning">@Localize("EmployeeRoleModal.SystemRoleMsg")</div>
+}
+<form asp-action="Edit" data-ajax="true" data-ajax-method="post" data-ajax-begin="ajaxBegin" data-ajax-success="ajaxSuccess" data-ajax-complete="ajaxComplete">
+	@await Html.PartialAsync("_Form", Model)
+	@if (!Model.SystemRole)
+	{
+		<button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>@Localize("Button.Save")</button>
+	}
+	<button type="button" class="btn btn-secondary" data-bs-dismiss="offcanvas">
+		<i class="fas fa-ban me-1"></i>@Localize("Button.Cancel")
+	</button>
+</form>
