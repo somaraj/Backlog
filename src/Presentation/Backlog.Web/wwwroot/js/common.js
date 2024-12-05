@@ -400,6 +400,27 @@ let AppJS = (function () {
                 });
                 return response;
             },
+            ajaxPatch: function (url, dto, blockElement, message, callback) {
+                if (blockElement !== undefined)
+                    this.blockUI(blockElement, message);
+                $.ajax({
+                    type: "PATCH",
+                    url: url,
+                    data: this.addAntiForgeryToken(dto),
+                    dataType: "json",
+                    success: function (result) {
+                        if (callback !== undefined)
+                            callback(result);
+                        if (blockElement !== undefined)
+                            JSManager.unblockUI(blockElement);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.error("error: " + xhr + "\n" + ajaxOptions + "\n" + thrownError);
+                        if (blockElement !== undefined)
+                            JSManager.unblockUI(blockElement);
+                    }
+                });
+            },
             reloadGrid: function (grid) {
                 if (grid != undefined)
                     $('#' + grid).DataTable().ajax.reload(this.postGridReload(grid));

@@ -27,11 +27,11 @@
 </div>
 
 <script>
-$(function () {
-    Dropzone.autoDiscover = false;
-    let docs = [];
+    $(function () {
+        Dropzone.autoDiscover = false;
+        let docs = [];
 
-    const myDropzone = $("div#dropzone-container").dropzone({
+        const myDropzone = $("div#dropzone-container").dropzone({
             url: "@Url.Action("Upload", "Document")",
             autoProcessQueue: true,
             maxFilesize: 2,
@@ -65,14 +65,12 @@ $(function () {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({ token: file.serverFilePath })
-                        })
-                        .then(response => {
+                        }).then(response => {
                             if (!response.ok) {
                                 throw new Error('File deletion failed');
                             }
                             console.log('File deleted successfully');
-                        })
-                        .catch(error => {
+                        }).catch(error => {
                             console.error('Error deleting file:', error);
                         });
                     }

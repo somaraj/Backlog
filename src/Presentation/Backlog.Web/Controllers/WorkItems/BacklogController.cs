@@ -239,6 +239,20 @@ namespace Backlog.Web.Controllers.WorkItems
 
         #endregion
 
+        #region Ajax
+
+        [HttpPatch]
+        public async Task<bool> UpdateStatus(int id, string name, string value)
+        {
+            var status = true;
+
+            await _backlogItemService.UpdateAsync(id, name, value);
+
+            return status;
+        }
+
+        #endregion
+
         #region Helper
 
         private async Task<BacklogModel> GetProjectAccess()

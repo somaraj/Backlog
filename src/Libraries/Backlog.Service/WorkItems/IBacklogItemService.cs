@@ -16,6 +16,9 @@ namespace Backlog.Service.WorkItems
 
         Task UpdateAsync(BacklogItem entity);
 
+        Task UpdateAsync(int id, string property, string value);
+
+
         Task DeleteAsync(BacklogItem entity);
     }
 }

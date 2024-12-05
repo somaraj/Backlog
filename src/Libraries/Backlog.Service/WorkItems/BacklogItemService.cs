@@ -1,7 +1,8 @@
-﻿using System.Linq.Dynamic.Core;
-using Backlog.Core.Common;
+﻿using Backlog.Core.Common;
 using Backlog.Core.Domain.WorkItems;
 using Backlog.Data.Repository;
+using System.Linq.Dynamic.Core;
+using System.Reflection;
 
 namespace Backlog.Service.WorkItems
 {
@@ -112,12 +113,57 @@ namespace Backlog.Service.WorkItems
             await _backlogItemRepository.UpdateAsync(entity);
         }
 
+        public async Task UpdateAsync(int id, string property, string value)
+        {
+            var entity = await GetByIdAsync(id);
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            var updatedEmployee = UpdateEntityProperty(entity, property, value);
+
+            await _backlogItemRepository.UpdateAsync(entity);
+        }
+
         public async Task DeleteAsync(BacklogItem entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
             await _backlogItemRepository.DeleteAsync(entity);
+        }
+
+        private async Task InsertHistory(BacklogItem originalEntity, BacklogItem modifiedEntity)
+        {
+            var entity = new BacklogItemHistory
+            {
+                //BacklogItemId = originalEntity.Id,
+                //Description=
+            };
+
+            await _historyRepository.InsertAsync(entity);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        public TEntity UpdateEntityProperty<TEntity>(TEntity entity, string propertyName, object newValue) where TEntity : class
+        {
+            var entityType = typeof(TEntity);
+
+            var property = entityType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+            if (property != null)
+            {
+                var propertyType = property.PropertyType;
+
+                var convertedValue = Convert.ChangeType(newValue, propertyType);
+
+                property.SetValue(entity, convertedValue);
+
+                return entity;
+            }
+
+            throw new ArgumentException($"Property '{propertyName}' not found on type '{entityType.Name}'.");
         }
 
         #endregion
